@@ -28,4 +28,4 @@ function add_to_calender_shortcode_callback( $attrs ) {
 
     return ob_get_clean();
 }   
-add_shortcode('dw_add_to_calender', 'add_to_calender_shortcode_callback' );
+add_shortcode('add_to_calender', 'add_to_calender_shortcode_callback' );
