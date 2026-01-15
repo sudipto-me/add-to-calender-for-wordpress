@@ -1,26 +1,67 @@
 <?php
+/**
+ * This is the file for elementor widgets.
+ */
 
-class Add_to_calender_Widget extends \Elementor\Widget_Base{
-    public function get_name(): string {
+defined('ABSPATH') || exit();
+class Add_to_Calender_Widget extends \Elementor\Widget_Base{
+
+    /**
+     * Get widget name.
+     *
+     * @return string Widget name.
+     * @since 1.0.0
+     */
+    public function get_name() {
 		return 'add_to_calender';
 	}
 
-	public function get_title(): string {
+    /**
+     * Get widget title.
+     *
+     * @return string Widget title.
+     * @since 1.0.0
+     */
+	public function get_title() {
 		return esc_html__( 'Add to Calendar', 'add-to-calender' );
 	}
 
-	public function get_icon(): string {
+    /**
+     * Get widget icon.
+     *
+     * @return string Widget icon.
+     * @since 1.0.0
+     */
+	public function get_icon() {
 		return 'eicon-calendar';
 	}
 
-	public function get_categories(): array {
+    /**
+     * Get widget categories.
+     *
+     * @return array Widget categories.
+     * @since 1.0.0
+     */
+	public function get_categories() {
 		return [ 'basic' ];
 	}
 
-	public function get_keywords(): array {
-		return [ 'dew', 'calendar' ];
+    /**
+     * Get widget keywords.
+     *
+     * @return array Widget keywords.
+     * @since 1.0.0
+     */
+	public function get_keywords() {
+		return [ 'add-to-calender', 'calendar' ];
 	}
 
+    /**
+     * Register widget controls.
+     *
+     * @return void
+     * @since 1.0.0
+     */
 	protected function _register_controls() {
         $this->start_controls_section(
             'content_section',
@@ -295,12 +336,15 @@ class Add_to_calender_Widget extends \Elementor\Widget_Base{
         );
 
         $this->end_controls_section();
-
-
     }
 
-
-	protected function render(): void {
+    /**
+     * Render widget output on the frontend.
+     *
+     * @return void
+     * @since 1.0.0
+     */
+	protected function render() {
 		$settings = $this->get_settings_for_display();
 		$options = !empty($settings['options']) ? "'" . implode("','", $settings['options']) . "'" : '';
          // Ensure end date is not before start date
@@ -378,4 +422,95 @@ class Add_to_calender_Widget extends \Elementor\Widget_Base{
 </script>
                         <?php
 	}
+
+    /**
+     * Render widget output in the editor.
+     *
+     * @return void
+     * @since 1.0.0
+     */
+    protected function content_template() {
+        ?>
+        <#
+        var start_date = settings.start_date;
+        var end_date = settings.end_date;
+
+        if ( end_date < start_date ) {
+            end_date = start_date;
+        }
+
+        var options = settings.options ? "'" + settings.options.join("','") + "'" : '';
+        var hide_icons = settings.hide_icons ? settings.hide_icons.join(' ') : '';
+        var hide_texts = settings.hide_texts ? settings.hide_texts.join(' ') : '';
+        var past_date_handle = Array.isArray(settings.past_date_handle) ? settings.past_date_handle.join('') : settings.past_date_handle;
+        #>
+        <add-to-calendar-button 
+            name="{{ settings.name }}"
+            description="{{ settings.description }}"
+            startDate="{{ start_date }}"
+            startTime="{{ settings.start_time }}"
+            endDate="{{ end_date }}"
+            endTime="{{ settings.end_time }}"
+            timeZone="{{ settings.time_zone }}"
+            location="{{ settings.location }}"
+            <# if( settings.organizer_name && settings.organizer_email ) { 
+                 if ( /.+@.+/.test(settings.organizer_email) ) { #>
+                    organizer="{{ settings.organizer_name }}|{{ settings.organizer_email }}"
+                <# } 
+               } #>
+            <# if( settings.ics_file_link && settings.ics_file_link.url ) { #>
+                icsFile="{{ settings.ics_file_link.url }}"
+            <# } #>    
+            <# if( settings.availability ) { #>
+                availability="{{ settings.availability }}"
+            <# } #>
+            <# if( settings.ics_file_name ) { #>
+                iCalFileName="{{ settings.ics_file_name }}"
+            <# } #> 
+            options="{{ options }}"
+            listStyle="{{ settings.list_type }}"
+            buttonStyle="{{ settings.button_style }}"
+            <# if( hide_icons ) { #>
+                {{ hide_icons }}
+            <# } #>
+            <# if( hide_texts ) { #>
+                {{ hide_texts }}
+            <# } #>    
+            <# if('yes' == settings.show_button_as_list) { #>
+                buttonsList
+            <# } #>   
+            pastDateHandling="{{ past_date_handle }}" 
+            <# if('yes' != settings.show_checkmark) { #>
+                hideCheckmark
+            <# } #>
+            label = "{{ settings.label }}"
+        ></add-to-calendar-button>
+
+        <script>
+        (function() {
+            var fixShadow = function() {
+                const atcbElement = document.querySelector("add-to-calendar-button");
+                if (atcbElement) {
+                    setTimeout(() => {
+                        if (atcbElement.shadowRoot) {
+                            const style = document.createElement("style");
+                            style.textContent = `
+                                :host #atcb-reference {
+                                    display:none;
+                                }
+                            `;
+                            atcbElement.shadowRoot.appendChild(style);
+                        }
+                    }, 1000);
+                }
+            };
+            if (document.readyState === 'loading') {
+                document.addEventListener("DOMContentLoaded", fixShadow);
+            } else {
+                fixShadow();
+            }
+        })();
+        </script>
+        <?php
+    }
 }

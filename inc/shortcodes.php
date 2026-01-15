@@ -1,7 +1,11 @@
 <?php
+/**
+ * This is the shortcode files.
+ * 
+ * This file is used to define the shortcodes.
+ */
+
 defined('ABSPATH') || exit();
-
-
 
 /**
  * Add to calender shortcode.
@@ -10,12 +14,12 @@ defined('ABSPATH') || exit();
  * 
  * @return string | object
  */
-function add_to_calender_shortcode_callback( $attrs ) {
+function create_shortcode_for_add_to_calender( $attrs ) {
 
     ob_start();
     ?>
     <add-to-calendar-button 
-  name="DW New Event"
+  name="Custom New Event"
   description="Play with me!"
   startDate="2025-03-15"
   startTime="10:15"
@@ -28,4 +32,4 @@ function add_to_calender_shortcode_callback( $attrs ) {
 
     return ob_get_clean();
 }   
-add_shortcode('add_to_calender', 'add_to_calender_shortcode_callback' );
+add_shortcode('add_to_calender', 'create_shortcode_for_add_to_calender' );

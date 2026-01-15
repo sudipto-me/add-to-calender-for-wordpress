@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Add to Calender
  * Description: This plugin handles add to calender tasks for the WordPress.
- * Version: 1.1.0
+ * Version: 1.0.0
  * Author: Sudipto Shakhari
  * Author URI: https://profiles.wordpress.org/shakhari/
  * Text Domain: add-to-calender
@@ -28,7 +28,7 @@ class Add_to_calender
 	 * @var string
 	 * @since 1.0.0
 	 */
-	public $version = '1.1.0';
+	public $version = '1.0.0';
 
 	/**
 	 * Add_to_calender constructor.
@@ -215,7 +215,7 @@ class Add_to_calender
 	{
 		require_once __DIR__ . '/inc/elementor/class-add-to-calender-widget.php';
 
-		$widgets_manager->register_widget_type(new \DWM_Add_To_Calendar_Widget());
+		$widgets_manager->register_widget_type(new \Add_to_Calender_Widget());
 	}
 }
 
