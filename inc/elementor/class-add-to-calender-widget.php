@@ -207,6 +207,8 @@ class Add_to_Calender_Widget extends \Elementor\Widget_Base{
                     'Google' => __('Google', 'add-to-calender'),
                     'iCal' => __('ICS File', 'add-to-calender'),
                     'Outlook.com' => __('Outlook.com', 'add-to-calender'),
+                    'Microsoft 365' => __('Microsoft 365', 'add-to-calender'),
+                    'Microsoft Teams' => __('Microsoft Teams', 'add-to-calender'),
                     'Yahoo' => __('Yahoo', 'add-to-calender'),
 				],
 				 'default' => ['Google', 'Outlook.com'],
