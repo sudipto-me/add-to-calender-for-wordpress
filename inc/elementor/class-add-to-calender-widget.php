@@ -102,15 +102,30 @@ class Add_to_Calender_Widget extends \Elementor\Widget_Base{
         );
 
         $this->add_control(
+            'all_day_event',
+            [
+                'label' => __('All Day Event', 'add-to-calender'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => esc_html__( 'Yes', 'add-to-calender' ),
+                'label_off' => esc_html__( 'No', 'add-to-calender' ),
+                'return_value' => 'yes',
+                'default' => 'no',
+            ]
+        );
+
+        $this->add_control(
             'start_time',
             [
                 'label' => __('Start Time', 'add-to-calender'),
                 'type' => \Elementor\Controls_Manager::TEXT,
                 'default' => '10:15',
+                'condition' => [
+                    'all_day_event!' => 'yes',
+                ],
             ]
         );
 
-         $this->add_control(
+        $this->add_control(
             'end_date',
             [
                 'label' => __('End Date', 'add-to-calender'),
@@ -119,6 +134,9 @@ class Add_to_Calender_Widget extends \Elementor\Widget_Base{
                     'enableTime' => false
                 ), 
                 'default' => date('Y-m-d'),
+                'condition' => [
+                    'all_day_event!' => 'yes',
+                ],
             ]
         );
 
@@ -128,6 +146,9 @@ class Add_to_Calender_Widget extends \Elementor\Widget_Base{
                 'label' => __('End Time', 'add-to-calender'),
                 'type' => \Elementor\Controls_Manager::TEXT,
                 'default' => '17:45',
+                'condition' => [
+                    'all_day_event!' => 'yes',
+                ],
             ]
         );
 
@@ -354,6 +375,7 @@ class Add_to_Calender_Widget extends \Elementor\Widget_Base{
             $settings['end_date'] = $settings['start_date'];
         }
 
+        $all_day_event = $settings['all_day_event'];
         $start_date = date('Y-m-d', strtotime($settings['start_date']));
         $end_date = date('Y-m-d', strtotime($settings['end_date']));
 
@@ -364,9 +386,11 @@ class Add_to_Calender_Widget extends \Elementor\Widget_Base{
             name="<?php echo esc_attr($settings['name']);?>"
             description="<?php echo esc_attr($settings['description']);?>"
             startDate="<?php echo esc_attr($start_date);?>"
+            <?php if( 'no' == $all_day_event ):?>
             startTime="<?php echo esc_attr($settings['start_time']);?>"
             endDate="<?php echo esc_attr($end_date);?>"
             endTime="<?php echo esc_attr($settings['end_time']);?>"
+            <?php endif;?>
             timeZone="<?php echo esc_attr($settings['time_zone']);?>"
             location="<?php echo esc_attr($settings['location']);?>"
             <?php if( !empty($settings['organizer_name']) && !empty($settings['organizer_email'])):?>
@@ -445,14 +469,17 @@ class Add_to_Calender_Widget extends \Elementor\Widget_Base{
         var hide_icons = settings.hide_icons ? settings.hide_icons.join(' ') : '';
         var hide_texts = settings.hide_texts ? settings.hide_texts.join(' ') : '';
         var past_date_handle = Array.isArray(settings.past_date_handle) ? settings.past_date_handle.join('') : settings.past_date_handle;
+        var all_day_event = settings.all_day_event;
         #>
         <add-to-calendar-button 
             name="{{ settings.name }}"
             description="{{ settings.description }}"
             startDate="{{ start_date }}"
+            <# if( 'no' == all_day_event ) { #>
             startTime="{{ settings.start_time }}"
             endDate="{{ end_date }}"
             endTime="{{ settings.end_time }}"
+            <# } #> 
             timeZone="{{ settings.time_zone }}"
             location="{{ settings.location }}"
             <# if( settings.organizer_name && settings.organizer_email ) { 
