@@ -206,11 +206,22 @@ class Add_to_calender
 		add_action('elementor/widgets/register', array($this, 'register_elementor_widgets'));
 	}
 
+	/**
+	 * Register Add to calender scripts
+	 * 
+	 * @return void
+	 */
 	public function plugin_scripts()
 	{
 		wp_enqueue_script('add-to-calender-scripts', '//cdn.jsdelivr.net/npm/add-to-calendar-button@2', array(), $this->version, array('in_footer' => true));
 	}
 
+	/**
+	 * Register the elementor widgets.
+	 * 
+	 * @param mixed $widgets_manager
+	 * @return void
+	 */
 	public function register_elementor_widgets($widgets_manager)
 	{
 		require_once __DIR__ . '/inc/elementor/class-add-to-calender-widget.php';
