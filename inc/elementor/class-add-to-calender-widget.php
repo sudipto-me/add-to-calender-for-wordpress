@@ -89,6 +89,7 @@ class Add_to_Calender_Widget extends \Elementor\Widget_Base{
             ]
         );
 
+        
         $this->add_control(
             'start_date',
             [
@@ -98,6 +99,21 @@ class Add_to_Calender_Widget extends \Elementor\Widget_Base{
                     'enableTime' => false
                 ), 
                 'default' => date('Y-m-d'),
+                
+            ]
+        );
+
+        
+
+        $this->add_control(
+            'all_day_event',
+            [
+                'label' => __('All Day Event', 'add-to-calender'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => esc_html__( 'Yes', 'add-to-calender' ),
+                'label_off' => esc_html__( 'No', 'add-to-calender' ),
+                'return_value' => 'yes',
+                'default' => 'no',
             ]
         );
 
@@ -107,10 +123,13 @@ class Add_to_Calender_Widget extends \Elementor\Widget_Base{
                 'label' => __('Start Time', 'add-to-calender'),
                 'type' => \Elementor\Controls_Manager::TEXT,
                 'default' => '10:15',
+                'condition' => [
+                    'all_day_event!' => 'yes',
+                ],
             ]
         );
 
-         $this->add_control(
+        $this->add_control(
             'end_date',
             [
                 'label' => __('End Date', 'add-to-calender'),
@@ -119,6 +138,9 @@ class Add_to_Calender_Widget extends \Elementor\Widget_Base{
                     'enableTime' => false
                 ), 
                 'default' => date('Y-m-d'),
+                'condition' => [
+                    'all_day_event!' => 'yes',
+                ],
             ]
         );
 
@@ -128,6 +150,9 @@ class Add_to_Calender_Widget extends \Elementor\Widget_Base{
                 'label' => __('End Time', 'add-to-calender'),
                 'type' => \Elementor\Controls_Manager::TEXT,
                 'default' => '17:45',
+                'condition' => [
+                    'all_day_event!' => 'yes',
+                ],
             ]
         );
 
@@ -207,6 +232,8 @@ class Add_to_Calender_Widget extends \Elementor\Widget_Base{
                     'Google' => __('Google', 'add-to-calender'),
                     'iCal' => __('ICS File', 'add-to-calender'),
                     'Outlook.com' => __('Outlook.com', 'add-to-calender'),
+                    'Microsoft 365' => __('Microsoft 365', 'add-to-calender'),
+                    'Microsoft Teams' => __('Microsoft Teams', 'add-to-calender'),
                     'Yahoo' => __('Yahoo', 'add-to-calender'),
 				],
 				 'default' => ['Google', 'Outlook.com'],
@@ -236,7 +263,164 @@ class Add_to_Calender_Widget extends \Elementor\Widget_Base{
                 'default' => __('Add to Calendar', 'add-to-calender'),
             ]
         );
-       
+
+        $this->add_control(
+            'recurring_event', 
+            [
+                'label' => __('Recurring Event', 'add-to-calender'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => esc_html__( 'Yes', 'add-to-calender' ),
+                'label_off' => esc_html__( 'No', 'add-to-calender' ),
+                'return_value' => 'yes',
+                'default' => 'no',
+            ]
+        );
+        $this->add_control(
+            'recurring_frequency',
+            [
+                'label' => __('Recurring Frequency', 'add-to-calender'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'options' => [
+                    'daily' => __('Daily', 'add-to-calender'),
+                    'weekly' => __('Weekly', 'add-to-calender'),
+                    'monthly' => __('Monthly', 'add-to-calender'),
+                    'yearly' => __('Yearly', 'add-to-calender'),
+                ],
+                'default' => 'weekly',
+                'condition' => [
+                    'recurring_event' => 'yes',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'recurring_interval',
+            [
+                'label' => __('Recurring Interval', 'add-to-calender'),
+                'type' => \Elementor\Controls_Manager::NUMBER,
+                'default' => '1',
+                'condition' => [
+                    'recurring_event' => 'yes',
+                ],
+            ]
+        );
+        $this->add_control(
+            'recurring_count',
+            [
+                'label' => __('Recurring Count','add-to-calender'),
+                'type' => \Elementor\Controls_Manager::NUMBER,
+                'default' => '1',
+                'condition' => [
+                    'recurring_event' => 'yes',
+                ],
+            ]
+        );
+        $this->add_control(
+            'recurrence_byDay',
+            [
+                'label' => __('WeekDays when the event will occur', 'add-to-calender'),
+                'type' => \Elementor\Controls_Manager::SELECT2,
+                'options' => [
+                    'MO' => __('Monday', 'add-to-calender'),
+                    'TU' => __('Tuesday', 'add-to-calender'),
+                    'WE' => __('Wednesday', 'add-to-calender'),
+                    'TH' => __('Thursday', 'add-to-calender'),
+                    'FR' => __('Friday', 'add-to-calender'),
+                    'SA' => __('Saturday', 'add-to-calender'),
+                    'SU' => __('Sunday', 'add-to-calender'),
+                ],
+                'multiple'=> true,
+                'condition' => [
+                    'recurring_event' => 'yes',
+                    'recurring_frequency' => 'weekly',
+                ],
+            ]
+        );
+        $this->add_control(
+            'recurrence_byDay_number', 
+            [
+                'label' => __('Number if any specific number of weekday like 3rd Friday','add-to-calender'),
+                'type' => \Elementor\Controls_Manager::NUMBER,
+                'max' => '4',
+                'condition' => [
+                    'recurring_event' => 'yes',
+                    'recurring_frequency' => 'weekly',
+                ],
+            ]
+        );
+        $this->add_control(
+            'recurrence_byMonthDay',
+            [
+                'label' => __('Number if any specific number of monthday like 3rd Friday','add-to-calender'),
+                'type' => \Elementor\Controls_Manager::SELECT2,
+                'options' => [
+                    '1' => __('1', 'add-to-calender'),
+                    '2' => __('2', 'add-to-calender'),
+                    '3' => __('3', 'add-to-calender'),
+                    '4' => __('4', 'add-to-calender'),
+                    '5' => __('5', 'add-to-calender'),
+                    '6' => __('6', 'add-to-calender'),
+                    '7' => __('7', 'add-to-calender'),
+                    '8' => __('8', 'add-to-calender'),
+                    '9' => __('9', 'add-to-calender'),
+                    '10' => __('10', 'add-to-calender'),
+                    '11' => __('11', 'add-to-calender'),
+                    '12' => __('12', 'add-to-calender'),
+                    '13' => __('13', 'add-to-calender'),
+                    '14' => __('14', 'add-to-calender'),
+                    '15' => __('15', 'add-to-calender'),
+                    '16' => __('16', 'add-to-calender'),
+                    '17' => __('17', 'add-to-calender'),
+                    '18' => __('18', 'add-to-calender'),
+                    '19' => __('19', 'add-to-calender'),
+                    '20' => __('20', 'add-to-calender'),
+                    '21' => __('21', 'add-to-calender'),
+                    '22' => __('22', 'add-to-calender'),
+                    '23' => __('23', 'add-to-calender'),
+                    '24' => __('24', 'add-to-calender'),
+                    '25' => __('25', 'add-to-calender'),
+                    '26' => __('26', 'add-to-calender'),
+                    '27' => __('27', 'add-to-calender'),
+                    '28' => __('28', 'add-to-calender'),
+                    '29' => __('29', 'add-to-calender'),
+                    '30' => __('30', 'add-to-calender'),
+                    '31' => __('31', 'add-to-calender'),
+                ],
+                'multiple' => true,
+                'condition' => [
+                    'recurring_event' => 'yes',
+                    'recurring_frequency' => 'monthly',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'recurrence_byMonth',
+            [
+                'label' => __('Which month this event will happen', 'add-to-calender'),
+                'type' => \Elementor\Controls_Manager::SELECT2,
+                'options' => [
+                    '1' => __('January', 'add-to-calender'),
+                    '2' => __('February', 'add-to-calender'),
+                    '3' => __('March', 'add-to-calender'),
+                    '4' => __('April', 'add-to-calender'),
+                    '5' => __('May', 'add-to-calender'),
+                    '6' => __('June', 'add-to-calender'),
+                    '7' => __('July', 'add-to-calender'),
+                    '8' => __('August', 'add-to-calender'),
+                    '9' => __('September', 'add-to-calender'),
+                    '10' => __('October', 'add-to-calender'),
+                    '11' => __('November', 'add-to-calender'),
+                    '12' => __('December', 'add-to-calender'),
+                ],
+                'multiple' => true,
+                'condition' => [
+                    'recurring_event' => 'yes',
+                    'recurring_frequency' => 'monthly',
+                ],
+            ]
+        );
+
         $this->end_controls_section();
 
         $this->start_controls_section(
@@ -352,19 +536,24 @@ class Add_to_Calender_Widget extends \Elementor\Widget_Base{
             $settings['end_date'] = $settings['start_date'];
         }
 
+        $all_day_event = $settings['all_day_event'];
         $start_date = date('Y-m-d', strtotime($settings['start_date']));
         $end_date = date('Y-m-d', strtotime($settings['end_date']));
 
         $hide_icons = !empty($settings['hide_icons']) ? implode(" ", $settings['hide_icons']) : '';
         $hide_texts = !empty($settings['hide_texts']) ? implode(" ", $settings['hide_texts']) : '';
+
+        $recurring_event = $settings['recurring_event'];
          ?>
           <add-to-calendar-button 
             name="<?php echo esc_attr($settings['name']);?>"
             description="<?php echo esc_attr($settings['description']);?>"
             startDate="<?php echo esc_attr($start_date);?>"
+            <?php if( 'no' == $all_day_event ):?>
             startTime="<?php echo esc_attr($settings['start_time']);?>"
             endDate="<?php echo esc_attr($end_date);?>"
             endTime="<?php echo esc_attr($settings['end_time']);?>"
+            <?php endif;?>
             timeZone="<?php echo esc_attr($settings['time_zone']);?>"
             location="<?php echo esc_attr($settings['location']);?>"
             <?php if( !empty($settings['organizer_name']) && !empty($settings['organizer_email'])):?>
@@ -392,7 +581,23 @@ class Add_to_Calender_Widget extends \Elementor\Widget_Base{
             <?php endif;?>    
             <?php if('yes' == $settings['show_button_as_list']):?>
             buttonsList
-            <?php endif;?>   
+            <?php endif;?> 
+            <?php if( 'yes' == $recurring_event ):?>
+                recurrence="<?php echo $settings['recurring_frequency'];?>"
+                recurrence_interval = "<?php echo $settings['recurring_interval'];?>"
+                recurring_count = "<?php echo $settings['recurring_count'];?>"
+            <?php endif;?>
+
+            <?php if( 'yes' == $recurring_event && 'weekly' ==  $settings['recurring_frequency']) :?>
+                recurrence_byDay="<?php echo !empty( $settings['recurring_frequency'] ) ? implode("','", $settings['recurring_frequency']) : ''?>"
+                recurrence_byDay_number="<?php echo !empty( $settings['recurrence_byDay_number'] ) ? $settings['recurrence_byDay_number']: ''?>"
+            <?php endif;?>
+
+            <?php if( 'yes' == $recurring_event && 'monthly' ==  $settings['recurring_frequency']) :?>
+                recurrence_byMonth="<?php echo !empty( $settings['recurrence_byMonth'] ) ? implode("','", $settings['recurrence_byMonth']) : ''?>"
+                recurrence_byMonthDay="<?php echo !empty( $settings['recurrence_byMonthDay'] ) ?  implode("','", $settings['recurrence_byMonth']): ''?>"
+            <?php endif;?>
+
             pastDateHandling="<?php echo implode("",$settings['past_date_handle']);?>" 
 
             <?php if('yes' != $settings['show_checkmark']):?>
@@ -443,14 +648,17 @@ class Add_to_Calender_Widget extends \Elementor\Widget_Base{
         var hide_icons = settings.hide_icons ? settings.hide_icons.join(' ') : '';
         var hide_texts = settings.hide_texts ? settings.hide_texts.join(' ') : '';
         var past_date_handle = Array.isArray(settings.past_date_handle) ? settings.past_date_handle.join('') : settings.past_date_handle;
+        var all_day_event = settings.all_day_event;
         #>
         <add-to-calendar-button 
             name="{{ settings.name }}"
             description="{{ settings.description }}"
             startDate="{{ start_date }}"
+            <# if( 'no' == all_day_event ) { #>
             startTime="{{ settings.start_time }}"
             endDate="{{ end_date }}"
             endTime="{{ settings.end_time }}"
+            <# } #> 
             timeZone="{{ settings.time_zone }}"
             location="{{ settings.location }}"
             <# if( settings.organizer_name && settings.organizer_email ) { 
@@ -478,7 +686,23 @@ class Add_to_Calender_Widget extends \Elementor\Widget_Base{
             <# } #>    
             <# if('yes' == settings.show_button_as_list) { #>
                 buttonsList
-            <# } #>   
+            <# } #>
+            <# if( 'yes' == settings.recurring_event ) { #>
+                recurrence="{{ settings.recurring_frequency }}"
+                recurrence_interval="{{ settings.recurring_interval }}"
+                recurring_count="{{ settings.recurring_count }}"
+            <# } #>
+            <# if( 'yes' == settings.recurring_event && 'weekly' == settings.recurring_frequency ) { #>
+                <# var recurrence_byDay = settings.recurrence_byDay && settings.recurrence_byDay.length ? settings.recurrence_byDay.join("','") : ''; #>
+                recurrence_byDay="{{ recurrence_byDay }}"
+                recurrence_byDay_number="{{ settings.recurrence_byDay_number }}"
+            <# } #>
+            <# if( 'yes' == settings.recurring_event && 'monthly' == settings.recurring_frequency ) { #>
+                <# var recurrence_byMonth = settings.recurrence_byMonth && settings.recurrence_byMonth.length ? settings.recurrence_byMonth.join("','") : ''; #>
+                <# var recurrence_byMonthDay = settings.recurrence_byMonthDay && settings.recurrence_byMonthDay.length ? settings.recurrence_byMonthDay.join("','") : ''; #>
+                recurrence_byMonth="{{ recurrence_byMonth }}"
+                recurrence_byMonthDay="{{ recurrence_byMonthDay }}"
+            <# } #>
             pastDateHandling="{{ past_date_handle }}" 
             <# if('yes' != settings.show_checkmark) { #>
                 hideCheckmark
