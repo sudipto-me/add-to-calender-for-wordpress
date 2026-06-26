@@ -397,11 +397,27 @@ class Add_to_Calender_Widget extends \Elementor\Widget_Base{
         $this->add_control(
             'recurrence_byMonth',
             [
-                'label' => __('Which month this event will happen', ''),
+                'label' => __('Which month this event will happen', 'add-to-calender'),
                 'type' => \Elementor\Controls_Manager::SELECT2,
                 'options' => [
-                    ' '
-                ]
+                    '1' => __('January', 'add-to-calender'),
+                    '2' => __('February', 'add-to-calender'),
+                    '3' => __('March', 'add-to-calender'),
+                    '4' => __('April', 'add-to-calender'),
+                    '5' => __('May', 'add-to-calender'),
+                    '6' => __('June', 'add-to-calender'),
+                    '7' => __('July', 'add-to-calender'),
+                    '8' => __('August', 'add-to-calender'),
+                    '9' => __('September', 'add-to-calender'),
+                    '10' => __('October', 'add-to-calender'),
+                    '11' => __('November', 'add-to-calender'),
+                    '12' => __('December', 'add-to-calender'),
+                ],
+                'multiple' => true,
+                'condition' => [
+                    'recurring_event' => 'yes',
+                    'recurring_frequency' => 'monthly',
+                ],
             ]
         );
 
@@ -526,6 +542,8 @@ class Add_to_Calender_Widget extends \Elementor\Widget_Base{
 
         $hide_icons = !empty($settings['hide_icons']) ? implode(" ", $settings['hide_icons']) : '';
         $hide_texts = !empty($settings['hide_texts']) ? implode(" ", $settings['hide_texts']) : '';
+
+        $recurring_event = $settings['recurring_event'];
          ?>
           <add-to-calendar-button 
             name="<?php echo esc_attr($settings['name']);?>"
@@ -563,7 +581,23 @@ class Add_to_Calender_Widget extends \Elementor\Widget_Base{
             <?php endif;?>    
             <?php if('yes' == $settings['show_button_as_list']):?>
             buttonsList
-            <?php endif;?>   
+            <?php endif;?> 
+            <?php if( 'yes' == $recurring_event ):?>
+                recurrence="<?php echo $settings['recurring_frequency'];?>"
+                recurrence_interval = "<?php echo $settings['recurring_interval'];?>"
+                recurring_count = "<?php echo $settings['recurring_count'];?>"
+            <?php endif;?>
+
+            <?php if( 'yes' == $recurring_event && 'weekly' ==  $settings['recurring_frequency']) :?>
+                recurrence_byDay="<?php echo !empty( $settings['recurring_frequency'] ) ? implode("','", $settings['recurring_frequency']) : ''?>"
+                recurrence_byDay_number="<?php echo !empty( $settings['recurrence_byDay_number'] ) ? $settings['recurrence_byDay_number']: ''?>"
+            <?php endif;?>
+
+            <?php if( 'yes' == $recurring_event && 'monthly' ==  $settings['recurring_frequency']) :?>
+                recurrence_byMonth="<?php echo !empty( $settings['recurrence_byMonth'] ) ? implode("','", $settings['recurrence_byMonth']) : ''?>"
+                recurrence_byMonthDay="<?php echo !empty( $settings['recurrence_byMonthDay'] ) ?  implode("','", $settings['recurrence_byMonth']): ''?>"
+            <?php endif;?>
+
             pastDateHandling="<?php echo implode("",$settings['past_date_handle']);?>" 
 
             <?php if('yes' != $settings['show_checkmark']):?>
