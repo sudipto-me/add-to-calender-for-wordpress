@@ -686,7 +686,23 @@ class Add_to_Calender_Widget extends \Elementor\Widget_Base{
             <# } #>    
             <# if('yes' == settings.show_button_as_list) { #>
                 buttonsList
-            <# } #>   
+            <# } #>
+            <# if( 'yes' == settings.recurring_event ) { #>
+                recurrence="{{ settings.recurring_frequency }}"
+                recurrence_interval="{{ settings.recurring_interval }}"
+                recurring_count="{{ settings.recurring_count }}"
+            <# } #>
+            <# if( 'yes' == settings.recurring_event && 'weekly' == settings.recurring_frequency ) { #>
+                <# var recurrence_byDay = settings.recurrence_byDay && settings.recurrence_byDay.length ? settings.recurrence_byDay.join("','") : ''; #>
+                recurrence_byDay="{{ recurrence_byDay }}"
+                recurrence_byDay_number="{{ settings.recurrence_byDay_number }}"
+            <# } #>
+            <# if( 'yes' == settings.recurring_event && 'monthly' == settings.recurring_frequency ) { #>
+                <# var recurrence_byMonth = settings.recurrence_byMonth && settings.recurrence_byMonth.length ? settings.recurrence_byMonth.join("','") : ''; #>
+                <# var recurrence_byMonthDay = settings.recurrence_byMonthDay && settings.recurrence_byMonthDay.length ? settings.recurrence_byMonthDay.join("','") : ''; #>
+                recurrence_byMonth="{{ recurrence_byMonth }}"
+                recurrence_byMonthDay="{{ recurrence_byMonthDay }}"
+            <# } #>
             pastDateHandling="{{ past_date_handle }}" 
             <# if('yes' != settings.show_checkmark) { #>
                 hideCheckmark
