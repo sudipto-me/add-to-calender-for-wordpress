@@ -89,6 +89,7 @@ class Add_to_Calender_Widget extends \Elementor\Widget_Base{
             ]
         );
 
+        
         $this->add_control(
             'start_date',
             [
@@ -98,8 +99,11 @@ class Add_to_Calender_Widget extends \Elementor\Widget_Base{
                     'enableTime' => false
                 ), 
                 'default' => date('Y-m-d'),
+                
             ]
         );
+
+        
 
         $this->add_control(
             'all_day_event',
@@ -259,7 +263,148 @@ class Add_to_Calender_Widget extends \Elementor\Widget_Base{
                 'default' => __('Add to Calendar', 'add-to-calender'),
             ]
         );
-       
+
+        $this->add_control(
+            'recurring_event', 
+            [
+                'label' => __('Recurring Event', 'add-to-calender'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => esc_html__( 'Yes', 'add-to-calender' ),
+                'label_off' => esc_html__( 'No', 'add-to-calender' ),
+                'return_value' => 'yes',
+                'default' => 'no',
+            ]
+        );
+        $this->add_control(
+            'recurring_frequency',
+            [
+                'label' => __('Recurring Frequency', 'add-to-calender'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'options' => [
+                    'daily' => __('Daily', 'add-to-calender'),
+                    'weekly' => __('Weekly', 'add-to-calender'),
+                    'monthly' => __('Monthly', 'add-to-calender'),
+                    'yearly' => __('Yearly', 'add-to-calender'),
+                ],
+                'default' => 'weekly',
+                'condition' => [
+                    'recurring_event' => 'yes',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'recurring_interval',
+            [
+                'label' => __('Recurring Interval', 'add-to-calender'),
+                'type' => \Elementor\Controls_Manager::NUMBER,
+                'default' => '1',
+                'condition' => [
+                    'recurring_event' => 'yes',
+                ],
+            ]
+        );
+        $this->add_control(
+            'recurring_count',
+            [
+                'label' => __('Recurring Count','add-to-calender'),
+                'type' => \Elementor\Controls_Manager::NUMBER,
+                'default' => '1',
+                'condition' => [
+                    'recurring_event' => 'yes',
+                ],
+            ]
+        );
+        $this->add_control(
+            'recurrence_byDay',
+            [
+                'label' => __('WeekDays when the event will occur', 'add-to-calender'),
+                'type' => \Elementor\Controls_Manager::SELECT2,
+                'options' => [
+                    'MO' => __('Monday', 'add-to-calender'),
+                    'TU' => __('Tuesday', 'add-to-calender'),
+                    'WE' => __('Wednesday', 'add-to-calender'),
+                    'TH' => __('Thursday', 'add-to-calender'),
+                    'FR' => __('Friday', 'add-to-calender'),
+                    'SA' => __('Saturday', 'add-to-calender'),
+                    'SU' => __('Sunday', 'add-to-calender'),
+                ],
+                'multiple'=> true,
+                'condition' => [
+                    'recurring_event' => 'yes',
+                    'recurring_frequency' => 'weekly',
+                ],
+            ]
+        );
+        $this->add_control(
+            'recurrence_byDay_number', 
+            [
+                'label' => __('Number if any specific number of weekday like 3rd Friday','add-to-calender'),
+                'type' => \Elementor\Controls_Manager::NUMBER,
+                'max' => '4',
+                'condition' => [
+                    'recurring_event' => 'yes',
+                    'recurring_frequency' => 'weekly',
+                ],
+            ]
+        );
+        $this->add_control(
+            'recurrence_byMonthDay',
+            [
+                'label' => __('Number if any specific number of monthday like 3rd Friday','add-to-calender'),
+                'type' => \Elementor\Controls_Manager::SELECT2,
+                'options' => [
+                    '1' => __('1', 'add-to-calender'),
+                    '2' => __('2', 'add-to-calender'),
+                    '3' => __('3', 'add-to-calender'),
+                    '4' => __('4', 'add-to-calender'),
+                    '5' => __('5', 'add-to-calender'),
+                    '6' => __('6', 'add-to-calender'),
+                    '7' => __('7', 'add-to-calender'),
+                    '8' => __('8', 'add-to-calender'),
+                    '9' => __('9', 'add-to-calender'),
+                    '10' => __('10', 'add-to-calender'),
+                    '11' => __('11', 'add-to-calender'),
+                    '12' => __('12', 'add-to-calender'),
+                    '13' => __('13', 'add-to-calender'),
+                    '14' => __('14', 'add-to-calender'),
+                    '15' => __('15', 'add-to-calender'),
+                    '16' => __('16', 'add-to-calender'),
+                    '17' => __('17', 'add-to-calender'),
+                    '18' => __('18', 'add-to-calender'),
+                    '19' => __('19', 'add-to-calender'),
+                    '20' => __('20', 'add-to-calender'),
+                    '21' => __('21', 'add-to-calender'),
+                    '22' => __('22', 'add-to-calender'),
+                    '23' => __('23', 'add-to-calender'),
+                    '24' => __('24', 'add-to-calender'),
+                    '25' => __('25', 'add-to-calender'),
+                    '26' => __('26', 'add-to-calender'),
+                    '27' => __('27', 'add-to-calender'),
+                    '28' => __('28', 'add-to-calender'),
+                    '29' => __('29', 'add-to-calender'),
+                    '30' => __('30', 'add-to-calender'),
+                    '31' => __('31', 'add-to-calender'),
+                ],
+                'multiple' => true,
+                'condition' => [
+                    'recurring_event' => 'yes',
+                    'recurring_frequency' => 'monthly',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'recurrence_byMonth',
+            [
+                'label' => __('Which month this event will happen', ''),
+                'type' => \Elementor\Controls_Manager::SELECT2,
+                'options' => [
+                    ' '
+                ]
+            ]
+        );
+
         $this->end_controls_section();
 
         $this->start_controls_section(
