@@ -1,0 +1,22 @@
+.wp-block-add-to-calender-for-wordpress {
+	min-height: 2.5rem;
+
+	/* Visible placeholder until the web component upgrades in the iframe. */
+	add-to-calendar-button:not(:defined) {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 10rem;
+		min-height: 2.5rem;
+		padding: 0 1rem;
+		border-radius: 6px;
+		background: #f0f0f1;
+		color: #1e1e1e;
+		font-size: 0.875rem;
+		line-height: 1.2;
+	}
+
+	add-to-calendar-button:not(:defined)::before {
+		content: 'Add to Calendar';
+	}
+}

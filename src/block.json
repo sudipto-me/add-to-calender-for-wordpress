@@ -1,0 +1,145 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "add-to-calender/add-to-calender-for-wordpress",
+	"version": "1.0.0",
+	"title": "Add to Calender For Wordpress",
+	"category": "widgets",
+	"icon": "calendar-alt",
+	"description": "Add events to calendar buttons.",
+	"keywords": [ "calendar", "add-to-calender", "event" ],
+	"textdomain": "add-to-calender",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"supports": {
+		"html": false,
+		"align": [ "left", "center", "right" ]
+	},
+	"attributes": {
+		"eventName": {
+			"type": "string",
+			"default": "Custom New Event"
+		},
+		"description": {
+			"type": "string",
+			"default": "Play with me!"
+		},
+		"startDate": {
+			"type": "string",
+			"default": ""
+		},
+		"allDayEvent": {
+			"type": "boolean",
+			"default": false
+		},
+		"startTime": {
+			"type": "string",
+			"default": "10:15"
+		},
+		"endDate": {
+			"type": "string",
+			"default": ""
+		},
+		"endTime": {
+			"type": "string",
+			"default": "17:45"
+		},
+		"timeZone": {
+			"type": "string",
+			"default": "Asia/Dhaka"
+		},
+		"location": {
+			"type": "string",
+			"default": "World Wide Web"
+		},
+		"availability": {
+			"type": "string",
+			"default": ""
+		},
+		"organizerName": {
+			"type": "string",
+			"default": ""
+		},
+		"organizerEmail": {
+			"type": "string",
+			"default": ""
+		},
+		"icsFileUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"icsFileName": {
+			"type": "string",
+			"default": "Event to Save"
+		},
+		"calendarOptions": {
+			"type": "array",
+			"default": [ "Google", "Outlook.com" ]
+		},
+		"pastDateHandling": {
+			"type": "string",
+			"default": "none"
+		},
+		"label": {
+			"type": "string",
+			"default": "Add to Calendar"
+		},
+		"recurringEvent": {
+			"type": "boolean",
+			"default": false
+		},
+		"recurringFrequency": {
+			"type": "string",
+			"default": "weekly"
+		},
+		"recurringInterval": {
+			"type": "number",
+			"default": 1
+		},
+		"recurringCount": {
+			"type": "number",
+			"default": 1
+		},
+		"recurrenceByDay": {
+			"type": "array",
+			"default": []
+		},
+		"recurrenceByDayNumber": {
+			"type": "number",
+			"default": 0
+		},
+		"recurrenceByMonthDay": {
+			"type": "array",
+			"default": []
+		},
+		"recurrenceByMonth": {
+			"type": "array",
+			"default": []
+		},
+		"listStyle": {
+			"type": "string",
+			"default": "dropdown"
+		},
+		"buttonStyle": {
+			"type": "string",
+			"default": "default"
+		},
+		"buttonsList": {
+			"type": "boolean",
+			"default": true
+		},
+		"hideIcons": {
+			"type": "array",
+			"default": []
+		},
+		"hideTexts": {
+			"type": "array",
+			"default": []
+		},
+		"showCheckmark": {
+			"type": "boolean",
+			"default": true
+		}
+	}
+}
