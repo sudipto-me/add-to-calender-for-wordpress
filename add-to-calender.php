@@ -1,36 +1,37 @@
 <?php
 
 /**
- * Plugin Name: Dew Wealth Add to Calender
- * Description: This plugin handles add to calender tasks for the Dew Wealth platform.
- * Version: 1.1.0
- * Author: The Wunderkind Company
- * Text Domain: dew-wealth-add-to-calender
+ * Plugin Name: Add to Calender
+ * Description: This plugin handles add to calender tasks for the WordPress.
+ * Version: 1.0.0
+ * Author: Sudipto Shakhari
+ * Author URI: https://profiles.wordpress.org/shakhari/
+ * Text Domain: add-to-calender
  * Requires at least: 6.2
  * Requires PHP: 7.4
  */
 
 defined('ABSPATH') || exit;
 
-class Dew_Wealth_Add_To_Calender
+class Add_to_calender
 {
 	/**
 	 * This plugin's instance
 	 *
-	 * @var Dew_Wealth_Add_To_Calender The one true Dew_Wealth_Add_To_Calender
+	 * @var Add_to_calender The one true Add_to_calender
 	 * @since 1.0
 	 */
 	private static $instance;
 	/**
-	 * Dew_Wealth_Add_To_Calender version.	
+	 * Add to Calender version.	
 	 *
 	 * @var string
 	 * @since 1.0.0
 	 */
-	public $version = '1.1.0';
+	public $version = '1.0.0';
 
 	/**
-	 * Dew_Wealth_User_Management constructor.
+	 * Add_to_calender constructor.
 	 */
 	private function __construct()
 	{
@@ -48,10 +49,10 @@ class Dew_Wealth_Add_To_Calender
 	 */
 	public function define_constants()
 	{
-		$this->define('DEW_WEALTH_ADD_TO_CALENDER_VERSION', $this->version);
-		$this->define('DEW_WEALTH_ADD_TO_CALENDER_FILE', __FILE__);
-		$this->define('DEW_WEALTH_ADD_TO_CALENDER_DIR', dirname(__FILE__));
-		$this->define('DEW_WEALTH_ADD_TO_CALENDER_INC_DIR', dirname(__FILE__) . '/includes');
+		$this->define('ADD_TO_CALENDER_VERSION', $this->version);
+		$this->define('ADD_TO_CALENDER_FILE', __FILE__);
+		$this->define('ADD_TO_CALENDER_DIR', dirname(__FILE__));
+		$this->define('ADD_TO_CALENDER_INC_DIR', dirname(__FILE__) . '/includes');
 	}
 
 	/**
@@ -72,16 +73,16 @@ class Dew_Wealth_Add_To_Calender
 	}
 
 	/**
-	 * Main Dew_Wealth_Add_To_Calender Instance
+	 * Main Add_to_calender Instance
 	 *
-	 * Ensures that only one instance of Dew_Wealth_Add_To_Calender exists in memory at any one time.
+	 * Ensures that only one instance of Add_to_calender exists in memory at any one time.
 	 *
-	 * @return Dew_Wealth_Add_To_Calender The one true Dew_Wealth_Add_To_Calender
+	 * @return Add_to_calender The one true Add_to_calender
 	 * @since 1.0.0
 	 */
 	public static function init()
 	{
-		if (! isset(self::$instance) && ! (self::$instance instanceof Dew_Wealth_Add_To_Calender)) {
+		if (! isset(self::$instance) && ! (self::$instance instanceof Add_to_calender)) {
 			self::$instance = new self();
 		}
 
@@ -151,7 +152,7 @@ class Dew_Wealth_Add_To_Calender
 	 */
 	public function localization_setup()
 	{
-		load_plugin_textdomain('dew-wealth-add-to-calender', false, plugin_basename(dirname(__FILE__)) . '/i18n/languages');
+		load_plugin_textdomain('add-to-calender', false, plugin_basename(dirname(__FILE__)) . '/i18n/languages');
 	}
 
 	/**
@@ -159,7 +160,7 @@ class Dew_Wealth_Add_To_Calender
 	 */
 	public function __clone()
 	{
-		_doing_it_wrong(__FUNCTION__, __('Cheatin&#8217; huh?', 'dew-wealth-add-to-calender'), '1.0.0');
+		_doing_it_wrong(__FUNCTION__, __('Cheatin&#8217; huh?', 'add-to-calender'), '1.0.0');
 	}
 
 	/**
@@ -167,7 +168,7 @@ class Dew_Wealth_Add_To_Calender
 	 */
 	public function __wakeup()
 	{
-		_doing_it_wrong(__FUNCTION__, __('Cheatin&#8217; huh?', 'dew-wealth-add-to-calender'), '1.0.0');
+		_doing_it_wrong(__FUNCTION__, __('Cheatin&#8217; huh?', 'add-to-calender'), '1.0.0');
 	}
 
 	/**
@@ -190,7 +191,8 @@ class Dew_Wealth_Add_To_Calender
 	{
 		// Include necessary files here.
 		require_once __DIR__ . '/inc/shortcodes.php';
-		do_action('dew_wealth_user_management_loaded');
+		require_once __DIR__ . '/inc/blocks.php';
+		do_action('add_to_calender_loaded');
 	}
 
 	/**
@@ -202,31 +204,43 @@ class Dew_Wealth_Add_To_Calender
 	{
 		add_action('plugins_loaded', array($this, 'localization_setup'));
 		add_action('wp_enqueue_scripts', array($this, 'plugin_scripts'));
+
 		add_action('elementor/widgets/register', array($this, 'register_elementor_widgets'));
 	}
 
+	/**
+	 * Register Add to calender scripts
+	 * 
+	 * @return void
+	 */
 	public function plugin_scripts()
 	{
-		wp_enqueue_script('add-to-calender-scripts', '//cdn.jsdelivr.net/npm/add-to-calendar-button@2', array(), $this->version, array('in_footer' => true));
+		wp_enqueue_script('add-to-calender-scripts', 'https://cdn.jsdelivr.net/npm/add-to-calendar-button@2', array(), $this->version, array('in_footer' => true));
 	}
 
+	/**
+	 * Register the elementor widgets.
+	 * 
+	 * @param mixed $widgets_manager
+	 * @return void
+	 */
 	public function register_elementor_widgets($widgets_manager)
 	{
 		require_once __DIR__ . '/inc/elementor/class-add-to-calender-widget.php';
 
-		$widgets_manager->register_widget_type(new \DWM_Add_To_Calendar_Widget());
+		$widgets_manager->register_widget_type(new \Add_to_Calender_Widget());
 	}
 }
 
 /**
- * The main function responsible for returning the one true Dew Wealth Add to Calender instance.
+ * The main function responsible for returning the one true Add to Calender instance.
  *
- * @return Dew_Wealth_Add_To_Calender
+ * @return Add_to_calender
  * @since 1.0.0
  */
-function Dew_Wealth_Add_To_Calender()
+function Add_to_calender()
 {
-	return Dew_Wealth_Add_To_Calender::init();
+	return Add_to_calender::init();
 }
 
-Dew_Wealth_Add_To_Calender();
+Add_to_calender();
