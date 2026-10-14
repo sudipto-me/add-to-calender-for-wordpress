@@ -465,7 +465,20 @@ class Add_to_Calender_Widget extends \Elementor\Widget_Base{
             ]
         );
 
-         
+        $this->add_control(
+            'button_mode', 
+            [
+                'label' => __('Button Mode', 'add-to-calender'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'options' => [
+                    'system' => __('System', 'add-to-calender'),
+                    'dark' => __('Dark', 'add-to-calender'),
+                    'light' => __('Light', 'add-to-calender'),
+                    'bodyScheme' => __('BodyScheme', 'add-to-calender'),
+                ],
+                'default' => 'light',
+            ]
+        );
         $this->add_control(
             'show_button_as_list',
             [
@@ -604,6 +617,7 @@ class Add_to_Calender_Widget extends \Elementor\Widget_Base{
                 hideCheckmark
             <?php endif;?>
             label = "<?php echo esc_attr($settings['label']);?>"
+            lightMode = "<?php echo $settings['button_mode'];?>"
             ></add-to-calendar-button>
 
             <script>
@@ -708,6 +722,7 @@ class Add_to_Calender_Widget extends \Elementor\Widget_Base{
                 hideCheckmark
             <# } #>
             label = "{{ settings.label }}"
+            lightMode = "{{ settings.button_mode }}"
         ></add-to-calendar-button>
 
         <script>
