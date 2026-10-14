@@ -191,6 +191,7 @@ class Add_to_calender
 	{
 		// Include necessary files here.
 		require_once __DIR__ . '/inc/shortcodes.php';
+		require_once __DIR__ . '/inc/blocks.php';
 		do_action('add_to_calender_loaded');
 	}
 
@@ -203,6 +204,7 @@ class Add_to_calender
 	{
 		add_action('plugins_loaded', array($this, 'localization_setup'));
 		add_action('wp_enqueue_scripts', array($this, 'plugin_scripts'));
+
 		add_action('elementor/widgets/register', array($this, 'register_elementor_widgets'));
 	}
 
@@ -213,7 +215,7 @@ class Add_to_calender
 	 */
 	public function plugin_scripts()
 	{
-		wp_enqueue_script('add-to-calender-scripts', '//cdn.jsdelivr.net/npm/add-to-calendar-button@2', array(), $this->version, array('in_footer' => true));
+		wp_enqueue_script('add-to-calender-scripts', 'https://cdn.jsdelivr.net/npm/add-to-calendar-button@2', array(), $this->version, array('in_footer' => true));
 	}
 
 	/**
